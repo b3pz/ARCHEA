@@ -42,4 +42,4 @@ Non modificare i ruoli HR, IT e SUPER_IT del portale esistente: Reader/Writer de
 5. Collegare i moduli alla stessa sessione e ai controlli Reader/Writer.
 6. Provare flussi trasversali con utenti reali e autorizzazioni limitate; poi attivare la navigazione comune.
 
-La demo corrente conserva il salvataggio D1. Questi contratti non stabiliscono da soli la sincronizzazione con Supabase.
+Il modulo commesse usa ora Supabase (vedi DEPLOYMENT.md). Le relazioni trasversali con HR, ticket, asset e mappe sono ancora da implementare. Lo schema effettivo usa `people.id` bigint, non UUID.
