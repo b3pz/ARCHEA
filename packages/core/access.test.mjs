@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {resolveAccess,requireWrite} from './access.mjs';
+test('Reader interno consulta senza account',()=>{assert.deepEqual(resolveAccess({trustedInternalAccess:true}),{role:'reader',userId:null,canRead:true,canWrite:false})});
+test('Writer deve avere account e ruolo assegnato',()=>{assert.equal(resolveAccess({trustedInternalAccess:true,userId:'u1',assignedRole:'writer'}).canWrite,true)});
+test('Il solo nome utente non concede scrittura',()=>assert.equal(resolveAccess({trustedInternalAccess:true,userId:'u1'}).canWrite,false));
+test('Un ruolo Writer senza identità non concede scrittura',()=>assert.equal(resolveAccess({trustedInternalAccess:true,assignedRole:'writer'}).canWrite,false));
+test('Il portale non espone dati fuori dal gateway',()=>assert.equal(resolveAccess({userId:'u1',assignedRole:'writer'}).canRead,false));
+test('Reader non può chiamare una mutazione',()=>assert.throws(()=>requireWrite({trustedInternalAccess:true}),{status:401}));
+test('Un Writer esterno al gateway viene respinto',()=>assert.throws(()=>requireWrite({userId:'u1',assignedRole:'writer'}),{status:403}));
